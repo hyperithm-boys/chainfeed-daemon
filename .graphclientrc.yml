@@ -1,0 +1,5 @@
+sources:
+  - name: chainfeed
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/47648/eth2023-chainfeed/version/latest

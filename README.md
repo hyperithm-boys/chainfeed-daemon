@@ -1,0 +1,5 @@
+# Codegen
+
+```text
+yarn build
+```

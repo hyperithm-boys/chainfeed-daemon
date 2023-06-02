@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.24.0",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@graphprotocol/client-cli": "^2.2.22",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "build": "graphclient build"
+  }
+}
