@@ -7,10 +7,10 @@ export interface Token {
     decimals: number;
 }
 
-export async function insertToken(token: Token) {
+export async function upsertToken(token: Token) {
     await prismaClient.tokens.upsert({
         where: { contract_address: token.contract_address },
-        update: token,
+        update: {},
         create: token,
     });
 }

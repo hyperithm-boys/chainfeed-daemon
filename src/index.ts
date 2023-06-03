@@ -1,6 +1,10 @@
 import { CurveSwapImpl } from "./fetcher_impls/curve";
 import { Fetcher } from "./fetcher";
-import { withClient } from "./prisma";
+import { prismaClient, withClient } from "./prisma";
+
+process.on('beforeExit', async () => {
+    await prismaClient.$disconnect();
+});
 
 (async () => {
     withClient(async () => {

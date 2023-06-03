@@ -43,6 +43,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
         if (itemsToInsert.length === 0) {
             return;
         }
+        console.log(itemsToInsert)
         for (let i = 0; i < 5; i++) {
             try {
                 await this.inner.insert(itemsToInsert);

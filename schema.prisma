@@ -14,7 +14,7 @@ model liquidations {
   transaction_hash         String
   pool_address             String
   collateral_token_address String
-  collateral_amount        BigInt
+  collateral_amount        String
   usd_value                Float
   tokens                   tokens   @relation(fields: [collateral_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidations_collateral_token_address")
 }
@@ -26,7 +26,7 @@ model lp_deposit_withdraw_token_entries {
   transaction_hash     String
   event_id             BigInt
   token_address        String
-  amount               BigInt
+  amount               String
   lp_deposit_withdraws lp_deposit_withdraws @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_lp_deposit_withdraw")
   tokens               tokens               @relation(fields: [token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_lp_deposit_withdraw_token_entries_token_address")
 }
@@ -48,8 +48,8 @@ model mev_transaction_entries {
   transaction_index                                         Int
   from_token_address                                        String
   to_token_address                                          String
-  from_amount                                               BigInt
-  to_amount                                                 BigInt
+  from_amount                                               String
+  to_amount                                                 String
   usd_value                                                 Float
   tokens_mev_transaction_entries_from_token_addressTotokens tokens   @relation("mev_transaction_entries_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_mev_transaction_entries_from_token_address")
   tokens_mev_transaction_entries_to_token_addressTotokens   tokens   @relation("mev_transaction_entries_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_mev_transaction_entries_to_token_address")
@@ -114,8 +114,8 @@ model stablecoin_swaps {
   transaction_hash                                   String
   from_token_address                                 String
   to_token_address                                   String
-  from_amount                                        BigInt
-  to_amount                                          BigInt
+  from_amount                                        String
+  to_amount                                          String
   usd_value                                          Float
   tokens_stablecoin_swaps_from_token_addressTotokens tokens   @relation("stablecoin_swaps_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_stablecoin_swaps_from_token_address")
   tokens_stablecoin_swaps_to_token_addressTotokens   tokens   @relation("stablecoin_swaps_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_stablecoin_swaps_to_token_address")
@@ -128,8 +128,8 @@ model swap_pool_creations {
   transaction_hash                                  String
   token_address1                                    String
   token_address2                                    String
-  initial_amount1                                   BigInt
-  initial_amount2                                   BigInt
+  initial_amount1                                   String
+  initial_amount2                                   String
   tokens_swap_pool_creations_token_address1Totokens tokens   @relation("swap_pool_creations_token_address1Totokens", fields: [token_address1], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_swap_pool_creations_token_address1")
   tokens_swap_pool_creations_token_address2Totokens tokens   @relation("swap_pool_creations_token_address2Totokens", fields: [token_address2], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_swap_pool_creations_token_address2")
 }
@@ -158,7 +158,7 @@ model transfers {
   inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
   updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
   transaction_hash String
-  amount           BigInt
+  amount           String
   usd_value        Float
 }
 
@@ -169,8 +169,8 @@ model uni_v2_swaps {
   transaction_hash                               String
   from_token_address                             String
   to_token_address                               String
-  from_amount                                    BigInt
-  to_amount                                      BigInt
+  from_amount                                    String
+  to_amount                                      String
   usd_value                                      Float
   price_impact                                   Float
   tokens_uni_v2_swaps_from_token_addressTotokens tokens   @relation("uni_v2_swaps_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_uni_v2_swaps_from_token_address")
