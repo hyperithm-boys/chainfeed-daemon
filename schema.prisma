@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model liquidations {
+  id                       BigInt   @id @default(autoincrement())
+  inserted_at              DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at               DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash         String
+  pool_address             String
+  collateral_token_address String
+  collateral_amount        BigInt
+  usd_value                Float
+  tokens                   tokens   @relation(fields: [collateral_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidations_collateral_token_address")
+}
+
+model lp_deposit_withdraw_token_entries {
+  id                   BigInt               @id @default(autoincrement())
+  inserted_at          DateTime             @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at           DateTime             @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash     String
+  event_id             BigInt
+  token_address        String
+  amount               BigInt
+  lp_deposit_withdraws lp_deposit_withdraws @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_lp_deposit_withdraw")
+  tokens               tokens               @relation(fields: [token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_lp_deposit_withdraw_token_entries_token_address")
+}
+
+model lp_deposit_withdraws {
+  id                                BigInt                              @id @default(autoincrement())
+  inserted_at                       DateTime                            @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                        DateTime                            @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash                  String
+  usd_value                         Float
+  lp_deposit_withdraw_token_entries lp_deposit_withdraw_token_entries[]
+}
+
+model mev_transaction_entries {
+  id                                                        BigInt   @id @default(autoincrement())
+  inserted_at                                               DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                                                DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash                                          String
+  transaction_index                                         Int
+  from_token_address                                        String
+  to_token_address                                          String
+  from_amount                                               BigInt
+  to_amount                                                 BigInt
+  usd_value                                                 Float
+  tokens_mev_transaction_entries_from_token_addressTotokens tokens   @relation("mev_transaction_entries_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_mev_transaction_entries_from_token_address")
+  tokens_mev_transaction_entries_to_token_addressTotokens   tokens   @relation("mev_transaction_entries_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_mev_transaction_entries_to_token_address")
+}
+
+model mev_transactions {
+  id          BigInt   @id @default(autoincrement())
+  inserted_at DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at  DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+}
+
+model nft_liquidations {
+  id                    BigInt   @id @default(autoincrement())
+  inserted_at           DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at            DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash      String
+  pool_contract_address String
+  nft_contract_address  String
+  nft_name              String
+  nft_revision          Int
+  floor_usd_value       Float
+}
+
+model nft_mints {
+  id               BigInt   @id @default(autoincrement())
+  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash String
+  contract_address String
+  nft_name         String
+  revision         Int
+}
+
+model nft_price_move {
+  id                     BigInt   @id @default(autoincrement())
+  inserted_at            DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at             DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash       String
+  contract_address       String
+  before_floor_usd_value Float
+  after_floor_usd_value  Float
+  nft_name               String
+  nft_revision           Int
+}
+
+model nft_transactions {
+  id               BigInt   @id @default(autoincrement())
+  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash String
+  from_address     String
+  to_address       String
+  contract_address String
+  nft_name         String
+  nft_revision     Int
+}
+
+model stablecoin_swaps {
+  id                                                 BigInt   @id @default(autoincrement())
+  inserted_at                                        DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                                         DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash                                   String
+  from_token_address                                 String
+  to_token_address                                   String
+  from_amount                                        BigInt
+  to_amount                                          BigInt
+  usd_value                                          Float
+  tokens_stablecoin_swaps_from_token_addressTotokens tokens   @relation("stablecoin_swaps_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_stablecoin_swaps_from_token_address")
+  tokens_stablecoin_swaps_to_token_addressTotokens   tokens   @relation("stablecoin_swaps_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_stablecoin_swaps_to_token_address")
+}
+
+model swap_pool_creations {
+  id                                                BigInt   @id @default(autoincrement())
+  inserted_at                                       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                                        DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash                                  String
+  token_address1                                    String
+  token_address2                                    String
+  initial_amount1                                   BigInt
+  initial_amount2                                   BigInt
+  tokens_swap_pool_creations_token_address1Totokens tokens   @relation("swap_pool_creations_token_address1Totokens", fields: [token_address1], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_swap_pool_creations_token_address1")
+  tokens_swap_pool_creations_token_address2Totokens tokens   @relation("swap_pool_creations_token_address2Totokens", fields: [token_address2], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_swap_pool_creations_token_address2")
+}
+
+model tokens {
+  contract_address                                                           String                              @id
+  inserted_at                                                                DateTime                            @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                                                                 DateTime                            @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  name                                                                       String
+  symbol                                                                     String
+  decimals                                                                   Int
+  liquidations                                                               liquidations[]
+  lp_deposit_withdraw_token_entries                                          lp_deposit_withdraw_token_entries[]
+  mev_transaction_entries_mev_transaction_entries_from_token_addressTotokens mev_transaction_entries[]           @relation("mev_transaction_entries_from_token_addressTotokens")
+  mev_transaction_entries_mev_transaction_entries_to_token_addressTotokens   mev_transaction_entries[]           @relation("mev_transaction_entries_to_token_addressTotokens")
+  stablecoin_swaps_stablecoin_swaps_from_token_addressTotokens               stablecoin_swaps[]                  @relation("stablecoin_swaps_from_token_addressTotokens")
+  stablecoin_swaps_stablecoin_swaps_to_token_addressTotokens                 stablecoin_swaps[]                  @relation("stablecoin_swaps_to_token_addressTotokens")
+  swap_pool_creations_swap_pool_creations_token_address1Totokens             swap_pool_creations[]               @relation("swap_pool_creations_token_address1Totokens")
+  swap_pool_creations_swap_pool_creations_token_address2Totokens             swap_pool_creations[]               @relation("swap_pool_creations_token_address2Totokens")
+  uni_v2_swaps_uni_v2_swaps_from_token_addressTotokens                       uni_v2_swaps[]                      @relation("uni_v2_swaps_from_token_addressTotokens")
+  uni_v2_swaps_uni_v2_swaps_to_token_addressTotokens                         uni_v2_swaps[]                      @relation("uni_v2_swaps_to_token_addressTotokens")
+}
+
+model transfers {
+  id               BigInt   @id @default(autoincrement())
+  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash String
+  amount           BigInt
+  usd_value        Float
+}
+
+model uni_v2_swaps {
+  id                                             BigInt   @id @default(autoincrement())
+  inserted_at                                    DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at                                     DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash                               String
+  from_token_address                             String
+  to_token_address                               String
+  from_amount                                    BigInt
+  to_amount                                      BigInt
+  usd_value                                      Float
+  price_impact                                   Float
+  tokens_uni_v2_swaps_from_token_addressTotokens tokens   @relation("uni_v2_swaps_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_uni_v2_swaps_from_token_address")
+  tokens_uni_v2_swaps_to_token_addressTotokens   tokens   @relation("uni_v2_swaps_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_uni_v2_swaps_to_token_address")
+}

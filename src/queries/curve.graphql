@@ -1,0 +1,22 @@
+query ERC20Swap($fromBlock: BigInt) {
+  swaps(first: 5, where: {blockNumber_gte: 16807119}) {
+    amountIn
+    amountInUSD
+    amountOut
+    amountOutUSD
+    tokenIn {
+      id
+      name
+      symbol
+      decimals
+    }
+    tokenOut {
+      id
+      name
+      symbol
+      decimals
+    }
+    blockNumber
+    hash
+  }
+}

@@ -1,5 +1,10 @@
 sources:
-  - name: chainfeed
+  - name: curve
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/47648/eth2023-chainfeed/version/latest
+        endpoint: https://gateway.thegraph.com/api/{env.THE_GRAPH_API_TOKEN}/subgraphs/id/GAGwGKc4ArNKKq9eFTcwgd1UGymvqhTier9Npqo1YvZB
+    transforms:
+      - blockTracking:
+          validateSchema: true
+documents:
+  - ./src/queries/curve.graphql
