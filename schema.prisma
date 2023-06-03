@@ -77,17 +77,6 @@ model nft_liquidations {
   floor_usd_value       Float
 }
 
-model nft_mints {
-  id               BigInt   @id @default(autoincrement())
-  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  transaction_hash String
-  block_number     Int
-  contract_address String
-  nft_name         String
-  revision         Int
-}
-
 model nft_price_move {
   id                     BigInt   @id @default(autoincrement())
   inserted_at            DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
@@ -99,19 +88,6 @@ model nft_price_move {
   after_floor_usd_value  Float
   nft_name               String
   nft_revision           Int
-}
-
-model nft_transactions {
-  id               BigInt   @id @default(autoincrement())
-  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  transaction_hash String
-  block_number     Int
-  from_address     String
-  to_address       String
-  contract_address String
-  nft_name         String
-  nft_revision     Int
 }
 
 model swap_pool_creations {
@@ -163,4 +139,19 @@ model erc20_swaps {
   usd_value                                     Float
   tokens_erc20_swaps_from_token_addressTotokens tokens   @relation("erc20_swaps_from_token_addressTotokens", fields: [from_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_erc20_swaps_from_token_address")
   tokens_erc20_swaps_to_token_addressTotokens   tokens   @relation("erc20_swaps_to_token_addressTotokens", fields: [to_token_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_erc20_swaps_to_token_address")
+}
+
+model nft_trades {
+  id               BigInt   @id @default(autoincrement())
+  inserted_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at       DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  transaction_hash String
+  block_number     Int
+  from_address     String
+  to_address       String
+  contract_address String
+  nft_name         String
+  nft_symbol       String
+  nft_token_id     String
+  price_eth        Float
 }

@@ -1,0 +1,16 @@
+query OpenSeaTrade($fromBlock: BigInt) {
+  trades(first: 20, where: {blockNumber_gte: $fromBlock}) {
+    blockNumber
+    transactionHash
+    buyer
+    seller
+    priceETH
+    collection {
+      id
+      name
+      symbol
+    }
+    tokenId
+  }
+}
+

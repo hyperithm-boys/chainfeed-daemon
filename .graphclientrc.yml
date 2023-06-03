@@ -20,6 +20,13 @@ sources:
     transforms:
       - blockTracking:
           validateSchema: true
+  - name: opensea
+    handler:
+      graphql:
+        endpoint: https://gateway.thegraph.com/api/{env.THE_GRAPH_API_TOKEN}/subgraphs/id/G1F2huam7aLSd2JYjxnofXmqkQjT5K2fRjdfapwiik9c
+    transforms:
+      - blockTracking:
+          validateSchema: true
   - name: erc20transfer
     handler:
       graphql:
@@ -28,7 +35,7 @@ sources:
     transforms:
       - blockTracking:
           validateSchema: true
-  - name: univ3factory
+  - name: univ2factory
     handler:
       graphql:
         endpoint: https://api.studio.thegraph.com/query/47648/uniswapv2factory/version/latest
@@ -38,5 +45,6 @@ sources:
 
 documents:
   - ./src/queries/erc20.graphql
-  - ./src/queries/univ3.graphql
+  - ./src/queries/uniswap.graphql
   - ./src/queries/aave.graphql
+  - ./src/queries/opensea.graphql

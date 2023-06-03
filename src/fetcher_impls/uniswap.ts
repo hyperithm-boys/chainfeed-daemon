@@ -11,8 +11,8 @@ export const UniV3DepositImpl = {
     name: "univ3-deposit",
     fetchDocument: UniV3DepositDocument,
     mapGraphQLResult: (value: UniV3DepositQuery) => value.deposits.map((deposit) => ({
-        block_number: Number.parseInt(deposit.blockNumber, 10),
         transaction_hash: deposit.hash,
+        block_number: Number.parseInt(deposit.blockNumber, 10),
         usd_value: Number.isNaN(Number.parseFloat(deposit.amountUSD)) ? -1 : Number.parseFloat(deposit.amountUSD),
     })),
     insert: async (values: UniV3DepositItem[]) => {
@@ -20,14 +20,14 @@ export const UniV3DepositImpl = {
     }
 }
 
-interface UniV3PoolCreationItem {
+interface UniV2PoolCreationItem {
     transaction_hash: string,
     block_number: number,
     token_address1: string,
     token_address2: string,
 }
 
-export const UniV3PoolCreationImpl = {
+export const UniV2PoolCreationImpl = {
     name: "univ3-pool-creation",
     fetchDocument: UniV3PoolCreationDocument,
     mapGraphQLResult: (value: UniV3PoolCreationQuery) => value.pairCreateds.map((pairCreated) => ({
@@ -36,7 +36,7 @@ export const UniV3PoolCreationImpl = {
         token_address1: pairCreated.token0,
         token_address2: pairCreated.token1,
     })),
-    insert: async (values: UniV3PoolCreationItem[]) => {
+    insert: async (values: UniV2PoolCreationItem[]) => {
         await prismaClient.swap_pool_creations.createMany({ data: values });
     }
 }
