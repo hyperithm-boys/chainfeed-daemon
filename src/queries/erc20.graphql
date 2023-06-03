@@ -20,3 +20,14 @@ query ERC20Swap($fromBlock: BigInt) {
     hash
   }
 }
+
+query ERC20Transfer($fromBlock: BigInt) {
+  transfers(first: 20, where: {blockNumber_gte: $fromBlock}) {
+    blockNumber
+    transactionHash
+    from
+    to
+    tokenAddress
+    value
+  }
+}

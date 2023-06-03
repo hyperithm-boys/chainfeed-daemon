@@ -1,0 +1,26 @@
+query UniV3Deposit($fromBlock: BigInt) {
+  deposits(first: 20, where: {blockNumber_gte: $fromBlock}) {
+    inputTokens {
+      decimals
+      id
+      name
+      symbol
+    }
+    blockNumber
+    hash
+    amountUSD
+    inputTokenAmounts
+  }
+}
+
+query UniV3PoolCreation($fromBlock: BigInt) {
+  pairCreateds(first: 20, where: {blockNumber_gte: $fromBlock}) {
+    id
+    token0
+    token1
+    pair
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}

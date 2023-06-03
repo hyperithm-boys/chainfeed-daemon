@@ -1,9 +1,9 @@
-export function splitBlockField<T extends { block: number }, K extends keyof Omit<T, "block">>(values: T[], ...additionalFields: K[]): [any, any][] {
+export function filterField<T extends { block_number: number }, K extends keyof T>(values: T[], ...additionalFields: K[]): [any, any][] {
     return values.map(x => {
-        const { block: _, ...rest } = x;
+        const { ...obj } = x;
         additionalFields.forEach(prop => {
-            delete rest[prop];
+            delete obj[prop];
         })
-        return [rest, x];
+        return [obj, x];
     })
 }

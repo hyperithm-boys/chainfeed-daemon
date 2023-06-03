@@ -1,4 +1,11 @@
 sources:
+  - name: aave 
+    handler:
+      graphql:
+        endpoint: https://gateway.thegraph.com/api/{env.THE_GRAPH_API_TOKEN}/subgraphs/id/HB1Z2EAw4rtPRYVb2Nz8QGFLHCpym6ByBX6vbCViuE9F
+    transforms:
+      - blockTracking:
+          validateSchema: true
   - name: curve
     handler:
       graphql:
@@ -6,5 +13,30 @@ sources:
     transforms:
       - blockTracking:
           validateSchema: true
+  - name: univ3
+    handler:
+      graphql:
+        endpoint: https://gateway.thegraph.com/api/{env.THE_GRAPH_API_TOKEN}/subgraphs/id/ELUcwgpm14LKPLrBRuVvPvNKHQ9HvwmtKgKSH6123cr7
+    transforms:
+      - blockTracking:
+          validateSchema: true
+  - name: erc20transfer
+    handler:
+      graphql:
+        # endpoint: https://gateway.thegraph.com/api/{env.THE_GRAPH_API_TOKEN}/subgraphs/id/5f861e17a75c3fc2ef194ae32dcb564c
+        endpoint: https://api.studio.thegraph.com/query/47648/erc20transfer/version/latest
+    transforms:
+      - blockTracking:
+          validateSchema: true
+  - name: univ3factory
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/47648/uniswapv2factory/version/latest
+    transforms:
+      - blockTracking:
+          validateSchema: true
+
 documents:
-  - ./src/queries/curve.graphql
+  - ./src/queries/erc20.graphql
+  - ./src/queries/univ3.graphql
+  - ./src/queries/aave.graphql

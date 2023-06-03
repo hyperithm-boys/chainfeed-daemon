@@ -6,7 +6,7 @@ import { logger } from "./logger";
 type DocumentToQuery<T> = T extends TypedDocumentNode<infer U> ? U : never;
 
 interface FeedItem {
-    block: number;
+    block_number: number;
 }
 
 export interface Fetchable<T extends TypedDocumentNode, U extends FeedItem> {
@@ -29,7 +29,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
         let error: any = undefined;
         for (let i = 0; i < 5; i++) {
             try {
-                result = await execute(this.inner.fetchDocument, { fromBlock: this.nextBlock });
+                result = await execute(this.inner.fetchDocument, { fromBlock: this.nextBlock },);
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not fetch data: ${e}`);
@@ -43,11 +43,10 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
         if (itemsToInsert.length === 0) {
             return;
         }
-        console.log(itemsToInsert)
         for (let i = 0; i < 5; i++) {
             try {
                 await this.inner.insert(itemsToInsert);
-                this.nextBlock = itemsToInsert.reduce((prev, curr) => prev < curr.block ? curr.block : prev, this.nextBlock) + 1;
+                this.nextBlock = itemsToInsert.reduce((prev, curr) => prev < curr.block_number ? curr.block_number : prev, this.nextBlock) + 1;
                 logger.info(`fetcher ${this.inner.name} inserted ${itemsToInsert.length} items, next block to fetch: ${this.nextBlock}`)
                 break;
             } catch (e) {

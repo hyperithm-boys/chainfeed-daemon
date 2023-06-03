@@ -1,0 +1,14 @@
+query AaveLiquidation($fromBlock: BigInt) {
+  liquidates(first: 20, where: {blockNumber_gte: 17000000}) {
+    blockNumber
+    hash
+    asset {
+      id
+    }
+    amount
+    amountUSD
+    market {
+      id
+    }
+  }
+}
