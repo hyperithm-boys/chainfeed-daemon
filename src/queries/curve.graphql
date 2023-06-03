@@ -1,5 +1,5 @@
 query ERC20Swap($fromBlock: BigInt) {
-  swaps(first: 5, where: {blockNumber_gte: 16807119}) {
+  swaps(first: 20, where: {blockNumber_gte: $fromBlock}) {
     amountIn
     amountInUSD
     amountOut
