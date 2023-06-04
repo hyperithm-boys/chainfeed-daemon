@@ -26,25 +26,23 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
 
     private async fetchAndInsert(): Promise<void> {
         let result: ExecutionResult<DocumentToQuery<T>> | undefined = undefined;;
-        let error: any = undefined;
-        for (let i = 0; i < 5; i++) {
+        while (true) {
             try {
                 result = await execute(this.inner.fetchDocument, { fromBlock: this.nextBlock },);
                 if (!result?.data) throw `result.data is null or undefined: ${JSON.stringify(result?.errors)}`
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not fetch data: ${e}`);
-                error = e;
+                await new Promise(r => setTimeout(r, 1000));
                 continue;
             }
         }
-        if (!result) throw error;
         if (!result?.data) throw "unreachable";
         const itemsToInsert = this.inner.mapGraphQLResult(result?.data);
         if (itemsToInsert.length === 0) {
             return;
         }
-        for (let i = 0; i < 5; i++) {
+        while (true) {
             try {
                 await this.inner.insert(itemsToInsert);
                 this.nextBlock = itemsToInsert.reduce((prev, curr) => prev < curr.block_number ? curr.block_number : prev, this.nextBlock) + 1;
@@ -52,6 +50,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not insert data: ${e}`);
+                await new Promise(r => setTimeout(r, 1000));
                 continue;
             }
         }
