@@ -33,7 +33,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not fetch data: ${e}`);
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 5000));
                 continue;
             }
         }
@@ -50,7 +50,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not insert data: ${e}`);
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 5000));
                 continue;
             }
         }
