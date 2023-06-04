@@ -7,7 +7,7 @@ import { OpenSeaTradeImpl } from "./fetcher_impls/opensea";
 
 (async () => {
     withClient(async () => {
-        const startBlock = 17404314;
+        const startBlock = 17404347;
         const fetchers = [
             new Fetcher(ERC20SwapImpl, 14, startBlock),
             new Fetcher(ERC20TransferImpl, 14, startBlock),
