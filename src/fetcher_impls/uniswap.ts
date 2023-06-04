@@ -1,4 +1,4 @@
-import { UniV3DepositDocument, UniV3DepositQuery, UniV3PoolCreationDocument, UniV3PoolCreationQuery } from "../../.graphclient";
+import { UniV3DepositDocument, UniV3DepositQuery, UniV2PoolCreationDocument, UniV2PoolCreationQuery } from "../../.graphclient";
 import { prismaClient } from "../prisma";
 
 interface UniV3DepositItem {
@@ -29,8 +29,8 @@ interface UniV2PoolCreationItem {
 
 export const UniV2PoolCreationImpl = {
     name: "univ3-pool-creation",
-    fetchDocument: UniV3PoolCreationDocument,
-    mapGraphQLResult: (value: UniV3PoolCreationQuery) => value.pairCreateds.map((pairCreated) => ({
+    fetchDocument: UniV2PoolCreationDocument,
+    mapGraphQLResult: (value: UniV2PoolCreationQuery) => value.pairCreateds.map((pairCreated) => ({
         block_number: Number.parseInt(pairCreated.blockNumber, 10),
         transaction_hash: pairCreated.transactionHash,
         token_address1: pairCreated.token0,

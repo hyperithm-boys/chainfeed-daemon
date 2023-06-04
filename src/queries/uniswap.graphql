@@ -13,7 +13,7 @@ query UniV3Deposit($fromBlock: BigInt) {
   }
 }
 
-query UniV3PoolCreation($fromBlock: BigInt) {
+query UniV2PoolCreation($fromBlock: BigInt) {
   pairCreateds(first: 20, where: {blockNumber_gte: $fromBlock}) {
     id
     token0
