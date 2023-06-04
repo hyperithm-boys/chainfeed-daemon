@@ -30,6 +30,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
         for (let i = 0; i < 5; i++) {
             try {
                 result = await execute(this.inner.fetchDocument, { fromBlock: this.nextBlock },);
+                if (!result?.data) throw `result.data is null or undefined: ${JSON.stringify(result?.errors)}`
                 break;
             } catch (e) {
                 logger.error(`fetcher ${this.inner.name} could not fetch data: ${e}`);
@@ -38,7 +39,7 @@ export class Fetcher<T extends TypedDocumentNode, U extends FeedItem> {
             }
         }
         if (!result) throw error;
-        if (!result?.data) throw `result.data is null or undefined: ${JSON.stringify(result?.errors)}`
+        if (!result?.data) throw "unreachable";
         const itemsToInsert = this.inner.mapGraphQLResult(result?.data);
         if (itemsToInsert.length === 0) {
             return;
