@@ -1,7 +1,7 @@
 import { Fetcher } from "./fetcher";
 import { withClient } from "./prisma";
 import { ERC20SwapImpl, ERC20TransferImpl } from "./fetcher_impls/erc20";
-import { UniV3DepositImpl, UniV2PoolCreationImpl } from "./fetcher_impls/uniswap";
+import { UniV3DepositImpl, UniV2PoolCreationImpl, UniV3WIthdrawImpl } from "./fetcher_impls/uniswap";
 import { AAVELiquidationImpl } from "./fetcher_impls/aave";
 import { OpenSeaTradeImpl } from "./fetcher_impls/opensea";
 
@@ -12,6 +12,7 @@ import { OpenSeaTradeImpl } from "./fetcher_impls/opensea";
             new Fetcher(ERC20SwapImpl, 14, startBlock),
             new Fetcher(ERC20TransferImpl, 14, startBlock),
             new Fetcher(UniV3DepositImpl, 14, startBlock),
+            new Fetcher(UniV3WIthdrawImpl, 14, startBlock),
             new Fetcher(UniV2PoolCreationImpl, 14, startBlock),
             new Fetcher(AAVELiquidationImpl, 14, startBlock),
             new Fetcher(OpenSeaTradeImpl, 14, startBlock),
